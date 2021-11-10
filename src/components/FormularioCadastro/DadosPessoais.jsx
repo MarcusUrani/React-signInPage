@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { Button, TextField, Switch, FormControlLabel } from "@material-ui/core";
 
 function DadosPessoais({ aoEnviar, validarCpf }) {
-  let [nome, setNome] = useState("");
-  let [sobrenome, setSobrenome] = useState("");
-  let [cpf, setCpf] = useState("");
-  let [promocoes, setPromocoes] = useState(true);
-  let [novidades, setNovidades] = useState(false);
-  let [erros, setErros] = useState({ cpf: { valido: true }, texto: "" });
+  const [nome, setNome] = useState("");
+  const [sobrenome, setSobrenome] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [promocoes, setPromocoes] = useState(true);
+  const [novidades, setNovidades] = useState(false);
+  const [erros, setErros] = useState({ cpf: { valido: true }, texto: "" });
 
   return (
     <form
