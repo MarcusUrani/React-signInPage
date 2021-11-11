@@ -1,18 +1,28 @@
 import { Button, TextField } from "@material-ui/core";
 import React, { useState } from "react";
 
-function DadosEntrega({ aoEnviar}) {
+function DadosEntrega({ aoEnviar, validacoes }) {
   const [cep, setCep] = useState("");
   const [endereco, setEndereco] = useState("");
   const [numero, setNumero] = useState("");
   const [estado, setEstado] = useState("");
   const [cidade, setCidade] = useState("");
+  const [erros, setErros] = useState({ cep: { valido: true }, texto: "" });
+
+  function validarCampos(event) {
+    const { name, value } = event.target;
+    const novoEstado = { ...erros };
+    novoEstado[name] = validacoes[name](value);
+    setErros(novoEstado);
+  }
 
   return (
     <form
       onSubmit={(event) => {
         event.preventDefault();
-        aoEnviar({ cep, endereco, numero, estado, cidade });
+        if (erros.cep.valido === true) {
+          aoEnviar({ cep, endereco, numero, estado, cidade });
+        }
       }}
     >
       <TextField
@@ -21,7 +31,11 @@ function DadosEntrega({ aoEnviar}) {
           event.stopPropagation();
           setCep(event.target.value);
         }}
+        onBlur={validarCampos}
+        error={!erros.cep.valido}
+        helperText={erros.cep.texto}
         id="cep"
+        name="cep"
         label="CEP"
         type="number"
         margin="normal"
@@ -30,7 +44,8 @@ function DadosEntrega({ aoEnviar}) {
       <TextField
         value={endereco}
         id="endereco"
-        label="endereco"
+        name="endereco"
+        label="Endereço"
         type="text"
         margin="normal"
         variant="outlined"
@@ -44,7 +59,8 @@ function DadosEntrega({ aoEnviar}) {
         value={numero}
         id="numero"
         label="Número"
-        type="text"
+        name="numero"
+        type="number"
         margin="normal"
         variant="outlined"
         onChange={(event) => {
@@ -57,6 +73,7 @@ function DadosEntrega({ aoEnviar}) {
         id="estado"
         label="Estado"
         type="text"
+        name="estado"
         margin="normal"
         variant="outlined"
         onChange={(event) => {
@@ -69,6 +86,7 @@ function DadosEntrega({ aoEnviar}) {
         id="cidade"
         label="Cidade"
         type="text"
+        name="cidade"
         margin="normal"
         variant="outlined"
         onChange={(event) => {
